@@ -1,0 +1,15 @@
+# systemd service per far partire il gestore dei bottoni tramite GPIO all'avvio
+
+[Unit]
+# nome del programma
+Description=retrogame
+# eseguto che l'interfaccia di retroarch è diventata attiva
+# Si potrebbe anche far partire prima, da testare
+After=retroarch.target
+
+[Service]
+Type=simple
+ExecStart=/storage/retrogame /storage/retrogame.cfg.6button
+
+[Install]
+WantedBy=default.target
