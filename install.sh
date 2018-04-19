@@ -36,7 +36,11 @@ else
 
     systemctl enable retrogame.service
     systemctl start retrogame.sercice
-
+    
+    echo "SUBSYSTEM==\"input\", ATTRS{name}==\"retrogame\", ENV{ID_INPUT_KEYBOARD}=\"1\"" >> /etc/udev/rules.d/10-retrogame.rules
+    echo "Imposto l'ora italiana..."
+    echo "TIMEZONE=Europe/Rome" > /storage/.cache/timezone
+    
     printf "Finito, riavvia la macchina con il comando\nsudo systemctl reboot"
 
 fi
