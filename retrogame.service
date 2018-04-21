@@ -9,7 +9,7 @@ After=retroarch.target
 
 [Service]
 Type=simple
-ExecStart=/storage/retrogame /storage/retrogame.cfg
+ExecStart=/storage/.bin/retrogame /storage/.bin/retrogame.cfg
 
 [Install]
 WantedBy=default.target
