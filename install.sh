@@ -1,4 +1,4 @@
-#!/usr/bin/env/ sh
+#!/usr/bin/sh
 
 echo "Script di installazione dei file necessari all'utilizzo delle GPIO come tastiera"
 echo "Creato dal team AT Lab"
@@ -10,7 +10,9 @@ else
     if [ -e retrogame ]
     then
         echo "Copio retrogame in .bin..."
-        cp retrogame "/storage/retrogame"
+        mkdir -p /storage/.bin
+	cp retrogame /storage/.bin/retrogame
+	chmod u+x /storage/.bin/retrogame
     else
         echo "File retrograme non trovato"
         exit
@@ -19,7 +21,7 @@ else
     if [ -e retrogame.cfg ]
     then
         echo "Copio retrogame.cfg in .bin..."
-        cp retrogame "/storage/retrogame.cfg"
+        cp retrogame.cfg /storage/.bin/retrogame.cfg
     else
         echo "File retrograme.cfg non trovato"
         exit
@@ -27,21 +29,31 @@ else
 
     if [ -e retrogame.service ]
     then
-        echo "Copio retrogame.service in .bin..."
-        cp retrogame "/storage/.config/systemd/user/retrogame.service"
+        echo "Copio retrogame.service..."
+        cp retrogame.service /storage/.config/system.d/retrogame.service
+	systemctl enable retrogame.service
+	systemctl start retrogame.service
     else
         echo "File retrograme.service non trovato"
         exit
     fi
 
-    systemctl enable retrogame.service
-    systemctl start retrogame.sercice
+    # systemctl enable retrogame.service
+    # systemctl start retrogame.sercice
     
     echo "SUBSYSTEM==\"input\", ATTRS{name}==\"retrogame\", ENV{ID_INPUT_KEYBOARD}=\"1\"" >> /etc/udev/rules.d/10-retrogame.rules
     echo "Imposto l'ora italiana..."
     echo "TIMEZONE=Europe/Rome" > /storage/.cache/timezone
     
-    printf "Finito, riavvia la macchina con il comando\nsudo systemctl reboot"
+    # printf "Finito, riavvia la macchina con il comando\nsudo systemctl reboot\n"
+    echo "Riavvare la macchina? (y/n)? "
+    read answer
+    if [ "$answer" != "${answer#[Yy]}" ] ;then
+    	echo "Riavvio..."
+	systemctl reboot
+    else
+    	echo "Per testare al meglio se tutto funziona meglio riavviare la macchina."
+    fi
 
 fi
 
