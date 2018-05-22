@@ -38,6 +38,17 @@ else
         exit
     fi
 
+    if [ -e jack-audio.service ]
+    then
+        echo "Copio jack-audio.service..."
+        cp jack-audio.service /storage/.config/system.d/jack-audio.service
+	systemctl enable jack-audio.service
+	systemctl start jack-audio.service
+    else
+        echo "File jack-audio.service non trovato"
+        exit
+    fi
+
     echo "SUBSYSTEM==\"input\", ATTRS{name}==\"retrogame\", ENV{ID_INPUT_KEYBOARD}=\"1\"" >> /etc/udev/rules.d/10-retrogame.rules
     echo "Imposto l'ora italiana..."
     echo "TIMEZONE=Europe/Rome" > /storage/.cache/timezone
